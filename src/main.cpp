@@ -117,7 +117,7 @@ void joyScanner(){
 	//Serial.print(y_read, DEC);
 	//Serial.print("Y\n");
 	bleKeypad.setX(axes_current[0]);
-
+	bleKeypad.sendGamepadReport();
 	//Check for deflection changed before sending the delection (prevents excess bandwidth usage)
 	//if (axes_current[0] != axes_prev[0] || axes_current[1] != axes_prev[1]){
 	//	axes_prev[0] = axes_current[0];

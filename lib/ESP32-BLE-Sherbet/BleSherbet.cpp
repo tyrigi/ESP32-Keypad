@@ -25,7 +25,7 @@
 // Report IDs:
 #define KEYBOARD_ID 0x01
 #define MEDIA_KEYS_ID 0x02
-#define GAMEPAD_ID 0x03
+#define GAMEPAD_ID 0x04
 
 static const uint8_t _hidReportDescriptor[] = {
   USAGE_PAGE(1),      0x01,          // USAGE_PAGE (Generic Desktop Ctrls)
@@ -91,7 +91,7 @@ static const uint8_t _hidReportDescriptor[] = {
   HIDINPUT(1),        0x02,          //   INPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
   END_COLLECTION(0),                  // END_COLLECTION
   // ------------------------------------------------- Gamepad
-  USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
+  //USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x05, // USAGE (Gamepad)
   COLLECTION(1),       0x01, // COLLECTION (Application)
   USAGE(1),            0x01, //   USAGE (Pointer)
@@ -138,8 +138,8 @@ static const uint8_t _hidReportDescriptor[] = {
   REPORT_COUNT(1),     0x02, //     REPORT_COUNT (2)
   HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;1 byte Hat1, Hat2
 
-  END_COLLECTION(0),         //     END_COLLECTION
-  END_COLLECTION(0)          //     END_COLLECTION
+  END_COLLECTION(0)//,         //     END_COLLECTION
+  //END_COLLECTION(0)          //     END_COLLECTION
 };
 
 BleKeypad::BleKeypad(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
@@ -424,10 +424,10 @@ void BleKeypad::setAxes(int16_t x, int16_t y, int16_t z, int16_t rZ, char rX, ch
 	_rY = rY;
 	_hat = hat;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 
-void BleKeypad::sendReport(void)
+void BleKeypad::sendGamepadReport(void)
 {
 	if (this->isConnected())
 	{
@@ -459,7 +459,7 @@ void BleKeypad::buttons(uint32_t b)
   {
     _buttons = b;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
   }
 }
 
@@ -478,35 +478,35 @@ void BleKeypad::setLeftThumb(int16_t x, int16_t y)
 	_x = x;
 	_y = y;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 void BleKeypad::setRightThumb(int16_t z, int16_t rZ)
 {
 	_z = z;
 	_rZ = rZ;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 
 void BleKeypad::setLeftTrigger(char rX)
 {
 	_rX = rX;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 
 void BleKeypad::setRightTrigger(char rY)
 {
 	_rY = rY;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 
 void BleKeypad::setHat(signed char hat)
 {
 	_hat = hat;
 	
-	if(_autoReport){ sendReport(); }
+	if(_autoReport){ sendGamepadReport(); }
 }
 
 void BleKeypad::setX(int16_t x)
