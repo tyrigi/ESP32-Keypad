@@ -17,6 +17,7 @@ public:
   BLECharacteristic* inputKeyboard;
   BLECharacteristic* outputKeyboard;
   BLECharacteristic* inputMediaKeys;
+  BLECharacteristic* inputGamepad;
 };
 
 #endif // CONFIG_BT_ENABLED

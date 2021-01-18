@@ -98,31 +98,26 @@ void joyScanner(){
 	y_read = analogRead(JOY_Y_PIN);
 	if (!REV_X){
 		//Update analog stick values with current deflection
-		//axes_current[0] = constrain(analogRead(JOY_X_PIN), MIN_X, MAX_X);//, JOY_MIN, JOY_MAX);
 		axes_current[0] = map(constrain(x_read, MIN_X, MAX_X), MIN_X, MAX_X, JOY_MIN, JOY_MAX);
 	} else {
 		//Reversed X axis
-		//axes_current[0] = constrain( (JOY_MAX - analogRead(JOY_X_PIN)), MIN_X, MAX_X);//, JOY_MIN, JOY_MAX);
 		axes_current[0] = map(constrain(x_read, MIN_X, MAX_X), MIN_X, MAX_X, JOY_MAX, JOY_MIN);
 	}
 	if (!REV_Y){
 		//Update analog stick values with current deflection
-		//axes_current[1] = constrain(analogRead(JOY_Y_PIN), MIN_Y, MAX_Y);//, JOY_MIN, JOY_MAX);
 		axes_current[1] = map(constrain(y_read, MIN_Y, MAX_Y), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX);
 	} else {
 		//Reversed y axis
-		//axes_current[1] = constrain( (JOY_MAX - analogRead(JOY_Y_PIN)), MIN_Y, MAX_Y);//, JOY_MIN, JOY_MAX);
 		axes_current[1] = map(constrain(y_read, MIN_Y, MAX_Y), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
 	}
 	//Serial.print(axes_current[0], DEC);
-	Serial.print(x_read, DEC);
-	Serial.print("X ");
+	//Serial.print(x_read, DEC);
+	//Serial.print("X ");
 	//Serial.print(axes_current[1], DEC);
-	Serial.print(y_read, DEC);
-	Serial.print("Y\n");
-	bleKeypad.setJoystick(JOY_LEFT, axes_current[0], axes_current[1]);
-	//Joystick.X(axes_current[0]);
-	//Joystick.Y(axes_current[1]);
+	//Serial.print(y_read, DEC);
+	//Serial.print("Y\n");
+	bleKeypad.setX(axes_current[0]);
+
 	//Check for deflection changed before sending the delection (prevents excess bandwidth usage)
 	//if (axes_current[0] != axes_prev[0] || axes_current[1] != axes_prev[1]){
 	//	axes_prev[0] = axes_current[0];
@@ -132,26 +127,12 @@ void joyScanner(){
 	//	Joystick.send_now();
 	//	Serial.print("Joy Update\n");
 	//}
-	
-	//Serial.print("X = ");
-	//Serial.print(analogRead(JOY_X_PIN));
-	//Serial.print("  Y = ");
-	//Serial.print(analogRead(JOY_Y_PIN));
-	//Serial.print("\n");
-	//XInput.setJoystick(JOY_LEFT, analogRead(JOY_X_PIN), analogRead(JOY_Y_PIN));
-	//XInput.send();
 }
 
 void setup() {
   //Configure serial port for debug messages
 	Serial.begin(115200);
   	bleKeypad.begin();
-	
-	//Configure XInput joystick settings
-	//XInput.setJoystickRange(JOY_MIN, JOY_MAX); //Set minimum and maximum values for joystick range
-	//XInput.setAutoSend(false); //Update joystick position manually
-	//pinMode(JOY_X_PIN, INPUT);
-	//pinMode(JOY_Y_PIN, INPUT);
 	
 	//Set all columns to INPUT (high-impedance)
 	for (int col = 0; col < COL_COUNT; col++){
@@ -183,17 +164,6 @@ void setup() {
 		debouncer.interval(DEBOUNCE);
 		modeDebounce[mode] = debouncer;
 	}
-
-	//Set mode LED's to correct mode
-	//pinMode(ledPins[0], OUTPUT);
-	//digitalWrite(ledPins[0], LOW);
-	//pinMode(ledPins[1], OUTPUT);
-	//digitalWrite(ledPins[1], LOW);
-	//pinMode(ledPins[2], OUTPUT);
-	//digitalWrite(ledPins[2], LOW);
-
-	//digitalWrite(ledPins[keyLayer], HIGH);
-	//XInput.begin();
 	Serial.print("Setup complete\n");
 }
 
