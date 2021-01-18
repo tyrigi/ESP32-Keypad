@@ -7,6 +7,7 @@
 #include "BLEHIDDevice.h"
 #include "BLECharacteristic.h"
 #include "Print.h"
+#include <Arduino.h>
 
 const uint8_t KEY_LEFT_CTRL = 0x80;
 const uint8_t KEY_LEFT_SHIFT = 0x81;
@@ -139,6 +140,32 @@ const uint8_t KEY_MEDIA_WWW_BACK = 0xF7; //{0, 32};
 const uint8_t KEY_MEDIA_CONSUMER_CONTROL_CONFIGURATION = 0xF8; //{0, 64}; // Media Selection
 const uint8_t KEY_MEDIA_EMAIL_READER = 0xF9; //{0, 128};
 
+enum XInputControl : uint8_t {
+	BUTTON_LOGO = 0,
+	BUTTON_A  = 1,
+	BUTTON_B = 2,
+	BUTTON_X = 3,
+	BUTTON_Y = 4,
+	BUTTON_LB = 5,
+	BUTTON_RB = 6,
+	BUTTON_BACK = 7,
+	BUTTON_START = 8,
+	BUTTON_L3 = 9,
+	BUTTON_R3 = 10,
+	DPAD_UP,
+	DPAD_DOWN,
+	DPAD_LEFT,
+	DPAD_RIGHT,
+	TRIGGER_LEFT,
+	TRIGGER_RIGHT,
+	JOY_LEFT,
+	JOY_RIGHT,
+};
+
+enum class XInputReceiveType {
+	Rumble = 0x00,
+	LEDs = 0x01,
+};
 
 //  Low level key report: up to 6 keys and shift, ctrl etc at once
 typedef struct
@@ -150,6 +177,81 @@ typedef struct
 
 class BleKeypad : public Print
 {
+public:
+  BleKeypad(std::string deviceName = "ESP32 Sherbet Gamepad", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
+  void begin(bool autoReport = true);
+  void end(void);
+  void sendReport(KeyReport* keys);
+  void sendReport(MediaKeyReport* keys);
+  size_t presskey(uint8_t k);
+  size_t presskey(const MediaKeyReport k);
+  size_t releasekey(uint8_t k);
+  size_t releasekey(const MediaKeyReport k);
+  size_t write(uint8_t c);
+  size_t write(const MediaKeyReport c);
+  size_t write(const uint8_t *buffer, size_t size);
+  void releaseAll(void);
+  bool isConnected(void);
+  void setBatteryLevel(uint8_t level);
+  uint8_t batteryLevel;
+  std::string deviceManufacturer;
+  std::string deviceName;
+  void press(uint8_t button);
+	void release(uint8_t button);
+	void setButton(uint8_t button, boolean state);
+
+	void setDpad(XInputControl pad, boolean state);
+	void setDpad(boolean up, boolean down, boolean left, boolean right, boolean useSOCD = true);
+
+	void setTrigger(XInputControl trigger, int32_t val);
+
+	void setJoystick(XInputControl joy, int32_t x, int32_t y);
+	void setJoystick(XInputControl joy, boolean up, boolean down, boolean left, boolean right, boolean useSOCD = true);
+	void setJoystickX(XInputControl joy, int32_t x);
+	void setJoystickY(XInputControl joy, int32_t y);
+
+	void gamepadReleaseAll();
+
+	// Auto-Send Data
+	void setAutoSend(boolean a);
+
+	// Read Control Surfaces
+	boolean getButton(uint8_t button) const;
+	boolean getDpad(XInputControl dpad) const;
+	uint8_t getTrigger(XInputControl trigger) const;
+	int16_t getJoystickX(XInputControl joy) const;
+	int16_t getJoystickY(XInputControl joy) const;
+
+	// Received Data
+	uint8_t getPlayer() const;  // Player # assigned to the controller (0 is unassigned)
+
+	uint16_t getRumble() const;  // Rumble motors. MSB is large weight, LSB is small
+	uint8_t  getRumbleLeft() const;  // Large rumble motor, left grip
+	uint8_t  getRumbleRight() const; // Small rumble motor, right grip
+
+	//XInputLEDPattern getLEDPattern() const;  // Returns LED pattern type
+
+	// Received Data Callback
+	using RecvCallbackType = void(*)(uint8_t packetType);
+	void setReceiveCallback(RecvCallbackType);
+
+	// USB IO
+	boolean connected();
+	void send();
+	int receive();
+
+	// Control Input Ranges
+	struct Range { int32_t min; int32_t max; };
+
+	void setTriggerRange(int32_t rangeMin, int32_t rangeMax);
+	void setJoystickRange(int32_t rangeMin, int32_t rangeMax);
+	void setRange(XInputControl ctrl, int32_t rangeMin, int32_t rangeMax);
+
+	// Setup
+	void reset();
+
+	// Debug
+	void printDebug(Print& output = Serial) const;
 private:
   uint32_t _buttons;
   int16_t _x;
@@ -171,28 +273,125 @@ private:
   void buttons(uint32_t b);
   void rawAction(uint8_t msg[], char msgSize);
   static void taskServer(void* pvParameter);
-public:
-  BleKeypad(std::string deviceName = "ESP32 Sherbet Gamepad", std::string deviceManufacturer = "Espressif", uint8_t batteryLevel = 100);
-  void begin(bool autoReport = true);
-  void end(void);
-  void sendReport(KeyReport* keys);
-  void sendReport(MediaKeyReport* keys);
-  size_t presskey(uint8_t k);
-  size_t presskey(const MediaKeyReport k);
-  size_t releasekey(uint8_t k);
-  size_t releasekey(const MediaKeyReport k);
-  size_t write(uint8_t c);
-  size_t write(const MediaKeyReport c);
-  size_t write(const uint8_t *buffer, size_t size);
-  void releaseAll(void);
-  bool isConnected(void);
-  void setBatteryLevel(uint8_t level);
-  uint8_t batteryLevel;
-  std::string deviceManufacturer;
-  std::string deviceName;
+  // Sent Data
+	uint8_t tx[20];  // USB transmit data
+	boolean newData;  // Flag for tx data changed
+	boolean autoSendOption;  // Flag for automatically sending data
+	
+	void setJoystickDirect(XInputControl joy, int16_t x, int16_t y);
+
+	void inline autosend() {
+		if (autoSendOption) { send(); }
+	}
+
+	// Received Data
+	volatile uint8_t player;  // Gamepad player #, buffered
+	volatile uint8_t rumble[2];  // Rumble motor data in, buffered
+	//volatile XInputLEDPattern ledPattern;  // LED pattern data in, buffered
+	RecvCallbackType recvCallback;  // User-set callback for received data
+
+	void parseLED(uint8_t leds);  // Parse LED data and set pattern/player data
+
+	// Control Input Ranges
+	Range rangeTrigLeft, rangeTrigRight, rangeJoyLeft, rangeJoyRight;
+	Range * getRangeFromEnum(XInputControl ctrl);
+	int32_t rescaleInput(int32_t val, Range in, Range out);
 protected:
   virtual void onStarted(BLEServer *pServer) { };
 };
+
+class XInputKeypad
+{
+public:
+	XInputKeypad();
+
+	void begin();
+
+	// Set Control Surfaces
+	void press(uint8_t button);
+	void release(uint8_t button);
+	void setButton(uint8_t button, boolean state);
+
+	void setDpad(XInputControl pad, boolean state);
+	void setDpad(boolean up, boolean down, boolean left, boolean right, boolean useSOCD = true);
+
+	void setTrigger(XInputControl trigger, int32_t val);
+
+	void setJoystick(XInputControl joy, int32_t x, int32_t y);
+	void setJoystick(XInputControl joy, boolean up, boolean down, boolean left, boolean right, boolean useSOCD = true);
+	void setJoystickX(XInputControl joy, int32_t x);
+	void setJoystickY(XInputControl joy, int32_t y);
+
+	void releaseAll();
+
+	// Auto-Send Data
+	void setAutoSend(boolean a);
+
+	// Read Control Surfaces
+	boolean getButton(uint8_t button) const;
+	boolean getDpad(XInputControl dpad) const;
+	uint8_t getTrigger(XInputControl trigger) const;
+	int16_t getJoystickX(XInputControl joy) const;
+	int16_t getJoystickY(XInputControl joy) const;
+
+	// Received Data
+	uint8_t getPlayer() const;  // Player # assigned to the controller (0 is unassigned)
+
+	uint16_t getRumble() const;  // Rumble motors. MSB is large weight, LSB is small
+	uint8_t  getRumbleLeft() const;  // Large rumble motor, left grip
+	uint8_t  getRumbleRight() const; // Small rumble motor, right grip
+
+	//XInputLEDPattern getLEDPattern() const;  // Returns LED pattern type
+
+	// Received Data Callback
+	using RecvCallbackType = void(*)(uint8_t packetType);
+	void setReceiveCallback(RecvCallbackType);
+
+	// USB IO
+	boolean connected();
+	int send();
+	int receive();
+
+	// Control Input Ranges
+	struct Range { int32_t min; int32_t max; };
+
+	void setTriggerRange(int32_t rangeMin, int32_t rangeMax);
+	void setJoystickRange(int32_t rangeMin, int32_t rangeMax);
+	void setRange(XInputControl ctrl, int32_t rangeMin, int32_t rangeMax);
+
+	// Setup
+	void reset();
+
+	// Debug
+	void printDebug(Print& output = Serial) const;
+
+private:
+	// Sent Data
+	uint8_t tx[20];  // USB transmit data
+	boolean newData;  // Flag for tx data changed
+	boolean autoSendOption;  // Flag for automatically sending data
+	
+	void setJoystickDirect(XInputControl joy, int16_t x, int16_t y);
+
+	void inline autosend() {
+		if (autoSendOption) { send(); }
+	}
+
+	// Received Data
+	volatile uint8_t player;  // Gamepad player #, buffered
+	volatile uint8_t rumble[2];  // Rumble motor data in, buffered
+	//volatile XInputLEDPattern ledPattern;  // LED pattern data in, buffered
+	RecvCallbackType recvCallback;  // User-set callback for received data
+
+	void parseLED(uint8_t leds);  // Parse LED data and set pattern/player data
+
+	// Control Input Ranges
+	Range rangeTrigLeft, rangeTrigRight, rangeJoyLeft, rangeJoyRight;
+	Range * getRangeFromEnum(XInputControl ctrl);
+	int32_t rescaleInput(int32_t val, Range in, Range out);
+};
+
+extern XInputKeypad XInput;
 
 #endif // CONFIG_BT_ENABLED
 #endif // ESP32_BLE_SHERBET_H
