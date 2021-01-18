@@ -14,14 +14,16 @@ const int JOY_X_PIN = 32;
 const int JOY_Y_PIN = 14;
 const bool REV_X = true;
 const bool REV_Y = true;
+const int MIN_ADC = 0;
+const int MAX_ADC = 4096;
 const int MIN_X = 500;
 const int CNTR_X = 1350;
-const int MAX_X = 3200;
+const int MAX_X = 3300;
 const int MIN_Y = 700;
 const int CNTR_Y = 1250;
-const int MAX_Y = 3200;
-const int JOY_MIN = 0;
-const int JOY_MAX = 1023;
+const int MAX_Y = 3300;
+const int JOY_MIN = -0;
+const int JOY_MAX = 65474;
 
 const int rowPins[] = {16, 17, 18, 19};
 const int colPins[] = {27, 26, 25, 23, 22, 21};
@@ -98,26 +100,36 @@ void joyScanner(){
 	y_read = analogRead(JOY_Y_PIN);
 	if (!REV_X){
 		//Update analog stick values with current deflection
-		axes_current[0] = map(constrain(x_read, MIN_X, MAX_X), MIN_X, MAX_X, JOY_MIN, JOY_MAX);
+		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MIN, JOY_MAX);
 	} else {
 		//Reversed X axis
-		axes_current[0] = map(constrain(x_read, MIN_X, MAX_X), MIN_X, MAX_X, JOY_MAX, JOY_MIN);
+		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MAX, JOY_MIN);
 	}
 	if (!REV_Y){
 		//Update analog stick values with current deflection
-		axes_current[1] = map(constrain(y_read, MIN_Y, MAX_Y), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX);
+		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX);
 	} else {
 		//Reversed y axis
-		axes_current[1] = map(constrain(y_read, MIN_Y, MAX_Y), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
+		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
 	}
+	//Serial.print(x_read, DEC);
+	//Serial.print("X  ");
 	//Serial.print(axes_current[0], DEC);
+	//Serial.print("X  ");
+	//Serial.print(axes_current[0], HEX);
 	//Serial.print(x_read, DEC);
 	//Serial.print("X ");
 	//Serial.print(axes_current[1], DEC);
 	//Serial.print(y_read, DEC);
-	//Serial.print("Y\n");
-	bleKeypad.setX(axes_current[0]);
-	bleKeypad.sendGamepadReport();
+	//Serial.print("Y");
+	//Serial.print("\n");
+
+	//bleKeypad.setX(axes_current[0]);
+	//bleKeypad.sendGamepadReport();
+	
+	bleKeypad.setAxes(axes_current[0], 0,0,0,0,0, DPAD_CENTERED);
+	//bleKeypad.sendReport();
+
 	//Check for deflection changed before sending the delection (prevents excess bandwidth usage)
 	//if (axes_current[0] != axes_prev[0] || axes_current[1] != axes_prev[1]){
 	//	axes_prev[0] = axes_current[0];

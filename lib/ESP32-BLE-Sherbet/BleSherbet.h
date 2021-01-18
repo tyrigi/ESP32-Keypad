@@ -231,7 +231,7 @@ public:
   void setRX(int16_t rX = 0);
   void setRY(int16_t rY = 0);
   void setAutoReport(bool autoReport = true);
-  void sendGamepadReport();
+  void sendReport();
   bool isPressed(uint32_t b = BUTTON_1); // check BUTTON_1 by default
 private:
   BLEHIDDevice* hid;

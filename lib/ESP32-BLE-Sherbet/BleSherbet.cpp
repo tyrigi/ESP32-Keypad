@@ -25,7 +25,7 @@
 // Report IDs:
 #define KEYBOARD_ID 0x01
 #define MEDIA_KEYS_ID 0x02
-#define GAMEPAD_ID 0x04
+#define GAMEPAD_ID 0x03
 
 static const uint8_t _hidReportDescriptor[] = {
   USAGE_PAGE(1),      0x01,          // USAGE_PAGE (Generic Desktop Ctrls)
@@ -91,12 +91,12 @@ static const uint8_t _hidReportDescriptor[] = {
   HIDINPUT(1),        0x02,          //   INPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
   END_COLLECTION(0),                  // END_COLLECTION
   // ------------------------------------------------- Gamepad
-  //USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
+  USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x05, // USAGE (Gamepad)
   COLLECTION(1),       0x01, // COLLECTION (Application)
-  USAGE(1),            0x01, //   USAGE (Pointer)
-  COLLECTION(1),       0x00, //   COLLECTION (Physical)
   REPORT_ID(1),       GAMEPAD_ID,   //   REPORT_ID (1)
+  //USAGE(1),            0x01, //   USAGE (Pointer)
+  COLLECTION(1),       0x00, //   COLLECTION (Physical)
 
   // ------------------------------------------------- Buttons (1 to 32)
   USAGE_PAGE(1),       0x09, //     USAGE_PAGE (Button)
@@ -127,7 +127,7 @@ static const uint8_t _hidReportDescriptor[] = {
   REPORT_SIZE(1),      0x08, //     REPORT_SIZE (8)
   REPORT_COUNT(1),     0x02, //     REPORT_COUNT (2)
   HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;4 bytes (X,Y,Z,rZ)
-  END_COLLECTION(0),		 //     END_COLLECTION
+  END_COLLECTION(0),		 //     END_COLLECTION (Physical)
   
   USAGE_PAGE(1),       0x01, //     USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x39, //     USAGE (Hat switch)
@@ -138,8 +138,8 @@ static const uint8_t _hidReportDescriptor[] = {
   REPORT_COUNT(1),     0x02, //     REPORT_COUNT (2)
   HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;1 byte Hat1, Hat2
 
-  END_COLLECTION(0)//,         //     END_COLLECTION
-  //END_COLLECTION(0)          //     END_COLLECTION
+  END_COLLECTION(0),         //     END_COLLECTION (Physical)
+  END_COLLECTION(0)          //     END_COLLECTION (Application)
 };
 
 BleKeypad::BleKeypad(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
@@ -241,6 +241,36 @@ void BleKeypad::sendReport(MediaKeyReport* keys)
     this->inputMediaKeys->setValue((uint8_t*)keys, sizeof(MediaKeyReport));
     this->inputMediaKeys->notify();
   }
+}
+
+void BleKeypad::sendReport(void)
+{
+	if (this->isConnected())
+	{
+		uint8_t m[15];
+		m[0] = _buttons;
+		m[1] = (_buttons >> 8);
+		m[2] = (_buttons >> 16);
+		m[3] = (_buttons >> 24);
+		m[4] = _x;
+		m[5] = (_x >> 8);
+		m[6] = _y;
+		m[7] = (_y >> 8);
+		m[8] = _z;
+		m[9] = (_z >> 8);
+		m[10] = _rZ;
+		m[11] = (_rZ >> 8);
+		m[12] = (signed char)(_rX - 128);
+		m[13] = (signed char)(_rY - 128);
+		m[14] = _hat;
+		if (m[12] == -128) { m[12] = -127; }
+		if (m[13] == -128) { m[13] = -127; }
+		this->inputGamepad->setValue(m, sizeof(m));
+		this->inputGamepad->notify();
+    //Serial.print(m[5], HEX);
+    //Serial.print(m[4], HEX);
+    //Serial.print("X\n");
+	}
 }
 
 uint8_t USBPutChar(uint8_t c);
@@ -424,42 +454,16 @@ void BleKeypad::setAxes(int16_t x, int16_t y, int16_t z, int16_t rZ, char rX, ch
 	_rY = rY;
 	_hat = hat;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 
-void BleKeypad::sendGamepadReport(void)
-{
-	if (this->isConnected())
-	{
-		uint8_t m[15];
-		m[0] = _buttons;
-		m[1] = (_buttons >> 8);
-		m[2] = (_buttons >> 16);
-		m[3] = (_buttons >> 24);
-		m[4] = _x;
-		m[5] = (_x >> 8);
-		m[6] = _y;
-		m[7] = (_y >> 8);
-		m[8] = _z;
-		m[9] = (_z >> 8);
-		m[10] = _rZ;
-		m[11] = (_rZ >> 8);
-		m[12] = (signed char)(_rX - 128);
-		m[13] = (signed char)(_rY - 128);
-		m[14] = _hat;
-		if (m[12] == -128) { m[12] = -127; }
-		if (m[13] == -128) { m[13] = -127; }
-		this->inputGamepad->setValue(m, sizeof(m));
-		this->inputGamepad->notify();
-	}
-}
 void BleKeypad::buttons(uint32_t b)
 {
   if (b != _buttons)
   {
     _buttons = b;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
   }
 }
 
@@ -478,35 +482,35 @@ void BleKeypad::setLeftThumb(int16_t x, int16_t y)
 	_x = x;
 	_y = y;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 void BleKeypad::setRightThumb(int16_t z, int16_t rZ)
 {
 	_z = z;
 	_rZ = rZ;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 
 void BleKeypad::setLeftTrigger(char rX)
 {
 	_rX = rX;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 
 void BleKeypad::setRightTrigger(char rY)
 {
 	_rY = rY;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 
 void BleKeypad::setHat(signed char hat)
 {
 	_hat = hat;
 	
-	if(_autoReport){ sendGamepadReport(); }
+	if(_autoReport){ sendReport(); }
 }
 
 void BleKeypad::setX(int16_t x)
