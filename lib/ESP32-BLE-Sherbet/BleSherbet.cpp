@@ -89,7 +89,7 @@ static const uint8_t _hidReportDescriptor[] = {
   USAGE(2),           0x83, 0x01,    //   Usage (Media sel)   ; bit 6: 64
   USAGE(2),           0x8A, 0x01,    //   Usage (Mail)        ; bit 7: 128
   HIDINPUT(1),        0x02,          //   INPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  END_COLLECTION(0),                  // END_COLLECTION
+  END_COLLECTION(0)/*,                  // END_COLLECTION
   // ------------------------------------------------- Gamepad
   USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
   USAGE(1),            0x05, // USAGE (Gamepad)
@@ -116,6 +116,8 @@ static const uint8_t _hidReportDescriptor[] = {
   USAGE(1), 		   0x35, //     USAGE (rZ)
   0x16, 			   0x01, 0x80,//LOGICAL_MINIMUM (-32767)
   0x26, 			   0xFF, 0x7F,//LOGICAL_MAXIMUM (32767)
+  //LOGICAL_MINIMUM(1),  0x01, //LGICAL_MINIMUM
+  //LOGICAL_MAXIMUM(1),  0xFF,
   REPORT_SIZE(1), 	   0x10, //		REPORT_SIZE (16)
   REPORT_COUNT(1), 	   0x04, //		REPORT_COUNT (4)
   HIDINPUT(1), 		   0x02, //     INPUT (Data,Var,Abs)
@@ -139,7 +141,7 @@ static const uint8_t _hidReportDescriptor[] = {
   HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;1 byte Hat1, Hat2
 
   END_COLLECTION(0),         //     END_COLLECTION (Physical)
-  END_COLLECTION(0)          //     END_COLLECTION (Application)
+  END_COLLECTION(0)          //     END_COLLECTION (Application)*/
 };
 
 BleKeypad::BleKeypad(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
