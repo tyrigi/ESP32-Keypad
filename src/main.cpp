@@ -10,20 +10,20 @@ const int MODE_COUNT = 3;
 const int DEBOUNCE = 3;
 const int SCAN_DELAY = 1;
 
-const int JOY_X_PIN = 32;
-const int JOY_Y_PIN = 14;
+const int JOY_X_PIN = 35;
+const int JOY_Y_PIN = 34;
 const bool REV_X = true;
 const bool REV_Y = true;
 const int MIN_ADC = 0;
 const int MAX_ADC = 4096;
 const int MIN_X = 500;
 const int CNTR_X = 1350;
-const int MAX_X = 3300;
+const int MAX_X = 3500;
 const int MIN_Y = 700;
 const int CNTR_Y = 1250;
-const int MAX_Y = 3300;
-const int JOY_MIN = -0;
-const int JOY_MAX = 65474;
+const int MAX_Y = 3500;
+const int JOY_MIN = -32767;
+const int JOY_MAX = 32767;
 
 const int rowPins[] = {16, 17, 18, 19};
 const int colPins[] = {27, 26, 25, 23, 22, 21};
@@ -112,33 +112,7 @@ void joyScanner(){
 		//Reversed y axis
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
 	}
-	//Serial.print(x_read, DEC);
-	//Serial.print("X  ");
-	//Serial.print(axes_current[0], DEC);
-	//Serial.print("X  ");
-	//Serial.print(axes_current[0], HEX);
-	//Serial.print(x_read, DEC);
-	//Serial.print("X ");
-	//Serial.print(axes_current[1], DEC);
-	//Serial.print(y_read, DEC);
-	//Serial.print("Y");
-	//Serial.print("\n");
-
-	//bleKeypad.setX(axes_current[0]);
-	//bleKeypad.sendGamepadReport();
-	
-	bleKeypad.setAxes(axes_current[0], 0,0,0,0,0, DPAD_CENTERED);
-	//bleKeypad.sendReport();
-
-	//Check for deflection changed before sending the delection (prevents excess bandwidth usage)
-	//if (axes_current[0] != axes_prev[0] || axes_current[1] != axes_prev[1]){
-	//	axes_prev[0] = axes_current[0];
-	//	axes_prev[1] = axes_current[1];
-	//	//Joystick.X(axes_current[0]);
-	//	//Joystick.Y(axes_current[1]);
-	//	Joystick.send_now();
-	//	Serial.print("Joy Update\n");
-	//}
+	bleKeypad.setAxes(axes_current[0], axes_current[1],0,0,0,0, DPAD_CENTERED);
 }
 
 void setup() {
@@ -186,7 +160,5 @@ void loop() {
 	  keyScanner();
 	  joyScanner();
 	  delay(SCAN_DELAY);
-	  //Serial.print(millis());
-	  //Serial.print("\n");
   }
 }
