@@ -61,33 +61,33 @@ static const uint8_t _hidReportDescriptor[] = {
   0x29, 0x65,        //   Usage Maximum (0x65)
   0x81, 0x00,        //   Input (Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
   0xC0,              // End Collection
-  0x05, 0x0C,        // Usage Page (Consumer)
-  0x09, 0x01,        // Usage (Consumer Control)
-  0xA1, 0x01,        // Collection (Application)
-  0x85, 0x02,        //   Report ID (2)
-  0x05, 0x0C,        //   Usage Page (Consumer)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x01,        //   Logical Maximum (1)
-  0x75, 0x01,        //   Report Size (1)
-  0x95, 0x10,        //   Report Count (16)
-  0x09, 0xB5,        //   Usage (Scan Next Track)
-  0x09, 0xB6,        //   Usage (Scan Previous Track)
-  0x09, 0xB7,        //   Usage (Stop)
-  0x09, 0xCD,        //   Usage (Play/Pause)
-  0x09, 0xE2,        //   Usage (Mute)
-  0x09, 0xE9,        //   Usage (Volume Increment)
-  0x09, 0xEA,        //   Usage (Volume Decrement)
-  0x0A, 0x23, 0x02,  //   Usage (AC Home)
-  0x0A, 0x94, 0x01,  //   Usage (AL Local Machine Browser)
-  0x0A, 0x92, 0x01,  //   Usage (AL Calculator)
-  0x0A, 0x2A, 0x02,  //   Usage (AC Bookmarks)
-  0x0A, 0x21, 0x02,  //   Usage (AC Search)
-  0x0A, 0x26, 0x02,  //   Usage (AC Stop)
-  0x0A, 0x24, 0x02,  //   Usage (AC Back)
-  0x0A, 0x83, 0x01,  //   Usage (AL Consumer Control Configuration)
-  0x0A, 0x8A, 0x01,  //   Usage (AL Email Reader)
-  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0xC0,              // End Collection
+  //0x05, 0x0C,        // Usage Page (Consumer)
+  //0x09, 0x01,        // Usage (Consumer Control)
+  //0xA1, 0x01,        // Collection (Application)
+  //0x85, 0x02,        //   Report ID (2)
+  //0x05, 0x0C,        //   Usage Page (Consumer)
+  //0x15, 0x00,        //   Logical Minimum (0)
+  //0x25, 0x01,        //   Logical Maximum (1)
+  //0x75, 0x01,        //   Report Size (1)
+  //0x95, 0x10,        //   Report Count (16)
+  //0x09, 0xB5,        //   Usage (Scan Next Track)
+  //0x09, 0xB6,        //   Usage (Scan Previous Track)
+  //0x09, 0xB7,        //   Usage (Stop)
+  //0x09, 0xCD,        //   Usage (Play/Pause)
+  //0x09, 0xE2,        //   Usage (Mute)
+  //0x09, 0xE9,        //   Usage (Volume Increment)
+  //0x09, 0xEA,        //   Usage (Volume Decrement)
+  //0x0A, 0x23, 0x02,  //   Usage (AC Home)
+  //0x0A, 0x94, 0x01,  //   Usage (AL Local Machine Browser)
+  //0x0A, 0x92, 0x01,  //   Usage (AL Calculator)
+  //0x0A, 0x2A, 0x02,  //   Usage (AC Bookmarks)
+  //0x0A, 0x21, 0x02,  //   Usage (AC Search)
+  //0x0A, 0x26, 0x02,  //   Usage (AC Stop)
+  //0x0A, 0x24, 0x02,  //   Usage (AC Back)
+  //0x0A, 0x83, 0x01,  //   Usage (AL Consumer Control Configuration)
+  //0x0A, 0x8A, 0x01,  //   Usage (AL Email Reader)
+  //0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
+  //0xC0,              // End Collection
   0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
   0x09, 0x05,        // Usage (Game Pad)
   0xA1, 0x01,        // Collection (Application)
@@ -131,271 +131,7 @@ static const uint8_t _hidReportDescriptor[] = {
   0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
   0xC0,              //   End Collection
   0xC0,              // End Collection
-  /*
-  0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
-  0x09, 0x06,        // Usage (Keyboard)
-  0xA1, 0x01,        // Collection (Application)
-  0x85, KEYBOARD_ID, //   Report ID (1)
-  0x05, 0x07,        //   Usage Page (Kbrd/Keypad)
-  0x19, 0xE0,        //   Usage Minimum (0xE0)
-  0x29, 0xE7,        //   Usage Maximum (0xE7)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x01,        //   Logical Maximum (1)
-  0x75, 0x01,        //   Report Size (1)
-  0x95, 0x08,        //   Report Count (8)
-  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0x95, 0x01,        //   Report Count (1)
-  0x75, 0x08,        //   Report Size (8)
-  0x81, 0x01,        //   Input (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0x95, 0x05,        //   Report Count (5)
-  0x75, 0x01,        //   Report Size (1)
-  0x05, 0x08,        //   Usage Page (LEDs)
-  0x19, 0x01,        //   Usage Minimum (Num Lock)
-  0x29, 0x05,        //   Usage Maximum (Kana)
-  0x91, 0x02,        //   Output (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  0x95, 0x01,        //   Report Count (1)
-  0x75, 0x03,        //   Report Size (3)
-  0x91, 0x01,        //   Output (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  0x95, 0x06,        //   Report Count (6)
-  0x75, 0x08,        //   Report Size (8)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x65,        //   Logical Maximum (101)
-  0x05, 0x07,        //   Usage Page (Kbrd/Keypad)
-  0x19, 0x00,        //   Usage Minimum (0x00)
-  0x29, 0x65,        //   Usage Maximum (0x65)
-  0x81, 0x00,        //   Input (Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0xC0,              // End Collection
-  0x05, 0x0C,        // Usage Page (Consumer)
-  0x09, 0x01,        // Usage (Consumer Control)
-  0xA1, 0x01,        // Collection (Application)
-  0x85, MEDIA_KEYS_ID,//  Report ID (2)
-  0x05, 0x0C,        //   Usage Page (Consumer)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x01,        //   Logical Maximum (1)
-  0x75, 0x01,        //   Report Size (1)
-  0x95, 0x10,        //   Report Count (16)
-  0x09, 0xB5,        //   Usage (Scan Next Track)
-  0x09, 0xB6,        //   Usage (Scan Previous Track)
-  0x09, 0xB7,        //   Usage (Stop)
-  0x09, 0xCD,        //   Usage (Play/Pause)
-  0x09, 0xE2,        //   Usage (Mute)
-  0x09, 0xE9,        //   Usage (Volume Increment)
-  0x09, 0xEA,        //   Usage (Volume Decrement)
-  0x0A, 0x23, 0x02,  //   Usage (AC Home)
-  0x0A, 0x94, 0x01,  //   Usage (AL Local Machine Browser)
-  0x0A, 0x92, 0x01,  //   Usage (AL Calculator)
-  0x0A, 0x2A, 0x02,  //   Usage (AC Bookmarks)
-  0x0A, 0x21, 0x02,  //   Usage (AC Search)
-  0x0A, 0x26, 0x02,  //   Usage (AC Stop)
-  0x0A, 0x24, 0x02,  //   Usage (AC Back)
-  0x0A, 0x83, 0x01,  //   Usage (AL Consumer Control Configuration)
-  0x0A, 0x8A, 0x01,  //   Usage (AL Email Reader)
-  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0xC0,              // End Collection
-  0x05, 0x01,        // Usage Page (Generic Desktop Ctrls)
-  0x09, 0x04,        // Usage (Joystick)
-  0xA1, 0x01,        // Collection (Application)
-  0x85, GAMEPAD_ID,  //   Report ID (3)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x01,        //   Logical Maximum (1)
-  0x75, 0x01,        //   Report Size (1)
-  0x95, 0x20,        //   Report Count (32)
-  0x05, 0x09,        //   Usage Page (Button)
-  0x19, 0x01,        //   Usage Minimum (0x01)
-  0x29, 0x20,        //   Usage Maximum (0x20)
-  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x25, 0x07,        //   Logical Maximum (7)
-  0x35, 0x00,        //   Physical Minimum (0)
-  0x46, 0x3B, 0x01,  //   Physical Maximum (315)
-  0x75, 0x04,        //   Report Size (4)
-  0x95, 0x01,        //   Report Count (1)
-  0x65, 0x14,        //   Unit (System: English Rotation, Length: Centimeter)
-  0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
-  0x09, 0x39,        //   Usage (Hat switch)
-  0x81, 0x42,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,Null State)
-  0x05, 0x01,        //   Usage Page (Generic Desktop Ctrls)
-  0x09, 0x01,        //   Usage (Pointer)
-  0xA1, 0x00,        //   Collection (Physical)
-  0x15, 0x00,        //     Logical Minimum (0)
-  0x26, 0xFF, 0x03,  //     Logical Maximum (1023)
-  0x75, 0x0A,        //     Report Size (10)
-  0x95, 0x04,        //     Report Count (4)
-  0x09, 0x30,        //     Usage (X)
-  0x09, 0x31,        //     Usage (Y)
-  0x09, 0x32,        //     Usage (Z)
-  0x09, 0x35,        //     Usage (Rz)
-  0x81, 0x02,        //     Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0xC0,              //   End Collection
-  0x15, 0x00,        //   Logical Minimum (0)
-  0x26, 0xFF, 0x03,  //   Logical Maximum (1023)
-  0x75, 0x0A,        //   Report Size (10)
-  0x95, 0x02,        //   Report Count (2)
-  0x09, 0x36,        //   Usage (Slider)
-  0x09, 0x36,        //   Usage (Slider)
-  0x81, 0x02,        //   Input (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  0xC0,              // End Collection*/
 };
-
-
-  /*USAGE_PAGE(1),      0x01,          // USAGE_PAGE (Generic Desktop Ctrls)
-  USAGE(1),           0x06,          // USAGE (Keyboard)
-  COLLECTION(1),      0x01,          // COLLECTION (Application)
-  // ------------------------------------------------- Keyboard
-  REPORT_ID(1),       KEYBOARD_ID,   //   REPORT_ID (1)
-  USAGE_PAGE(1),      0x07,          //   USAGE_PAGE (Kbrd/Keypad)
-  USAGE_MINIMUM(1),   0xE0,          //   USAGE_MINIMUM (0xE0)
-  USAGE_MAXIMUM(1),   0xE7,          //   USAGE_MAXIMUM (0xE7)
-  LOGICAL_MINIMUM(1), 0x00,          //   LOGICAL_MINIMUM (0)
-  LOGICAL_MAXIMUM(1), 0x01,          //   Logical Maximum (1)
-  REPORT_SIZE(1),     0x01,          //   REPORT_SIZE (1)
-  REPORT_COUNT(1),    0x08,          //   REPORT_COUNT (8)
-  HIDINPUT(1),        0x02,          //   INPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  REPORT_COUNT(1),    0x01,          //   REPORT_COUNT (1) ; 1 byte (Reserved)
-  REPORT_SIZE(1),     0x08,          //   REPORT_SIZE (8)
-  HIDINPUT(1),        0x01,          //   INPUT (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  REPORT_COUNT(1),    0x05,          //   REPORT_COUNT (5) ; 5 bits (Num lock, Caps lock, Scroll lock, Compose, Kana)
-  REPORT_SIZE(1),     0x01,          //   REPORT_SIZE (1)
-  USAGE_PAGE(1),      0x08,          //   USAGE_PAGE (LEDs)
-  USAGE_MINIMUM(1),   0x01,          //   USAGE_MINIMUM (0x01) ; Num Lock
-  USAGE_MAXIMUM(1),   0x05,          //   USAGE_MAXIMUM (0x05) ; Kana
-  HIDOUTPUT(1),       0x02,          //   OUTPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  REPORT_COUNT(1),    0x01,          //   REPORT_COUNT (1) ; 3 bits (Padding)
-  REPORT_SIZE(1),     0x03,          //   REPORT_SIZE (3)
-  HIDOUTPUT(1),       0x01,          //   OUTPUT (Const,Array,Abs,No Wrap,Linear,Preferred State,No Null Position,Non-volatile)
-  REPORT_COUNT(1),    0x06,          //   REPORT_COUNT (6) ; 6 bytes (Keys)
-  REPORT_SIZE(1),     0x08,          //   REPORT_SIZE(8)
-  LOGICAL_MINIMUM(1), 0x00,          //   LOGICAL_MINIMUM(0)
-  LOGICAL_MAXIMUM(1), 0x65,          //   LOGICAL_MAXIMUM(0x65) ; 101 keys
-  USAGE_PAGE(1),      0x07,          //   USAGE_PAGE (Kbrd/Keypad)
-  USAGE_MINIMUM(1),   0x00,          //   USAGE_MINIMUM (0)
-  USAGE_MAXIMUM(1),   0x65,          //   USAGE_MAXIMUM (0x65)
-  HIDINPUT(1),        0x00,          //   INPUT (Data,Array,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  END_COLLECTION(0),                 // END_COLLECTION
-  // ------------------------------------------------- Media Keys
-  USAGE_PAGE(1),      0x0C,          // USAGE_PAGE (Consumer)
-  USAGE(1),           0x01,          // USAGE (Consumer Control)
-  COLLECTION(1),      0x01,          // COLLECTION (Application)
-  REPORT_ID(1),       MEDIA_KEYS_ID, //   REPORT_ID (3)
-  USAGE_PAGE(1),      0x0C,          //   USAGE_PAGE (Consumer)
-  LOGICAL_MINIMUM(1), 0x00,          //   LOGICAL_MINIMUM (0)
-  LOGICAL_MAXIMUM(1), 0x01,          //   LOGICAL_MAXIMUM (1)
-  REPORT_SIZE(1),     0x01,          //   REPORT_SIZE (1)
-  REPORT_COUNT(1),    0x10,          //   REPORT_COUNT (16)
-  USAGE(1),           0xB5,          //   USAGE (Scan Next Track)     ; bit 0: 1
-  USAGE(1),           0xB6,          //   USAGE (Scan Previous Track) ; bit 1: 2
-  USAGE(1),           0xB7,          //   USAGE (Stop)                ; bit 2: 4
-  USAGE(1),           0xCD,          //   USAGE (Play/Pause)          ; bit 3: 8
-  USAGE(1),           0xE2,          //   USAGE (Mute)                ; bit 4: 16
-  USAGE(1),           0xE9,          //   USAGE (Volume Increment)    ; bit 5: 32
-  USAGE(1),           0xEA,          //   USAGE (Volume Decrement)    ; bit 6: 64
-  USAGE(2),           0x23, 0x02,    //   Usage (WWW Home)            ; bit 7: 128
-  USAGE(2),           0x94, 0x01,    //   Usage (My Computer) ; bit 0: 1
-  USAGE(2),           0x92, 0x01,    //   Usage (Calculator)  ; bit 1: 2
-  USAGE(2),           0x2A, 0x02,    //   Usage (WWW fav)     ; bit 2: 4
-  USAGE(2),           0x21, 0x02,    //   Usage (WWW search)  ; bit 3: 8
-  USAGE(2),           0x26, 0x02,    //   Usage (WWW stop)    ; bit 4: 16
-  USAGE(2),           0x24, 0x02,    //   Usage (WWW back)    ; bit 5: 32
-  USAGE(2),           0x83, 0x01,    //   Usage (Media sel)   ; bit 6: 64
-  USAGE(2),           0x8A, 0x01,    //   Usage (Mail)        ; bit 7: 128
-  HIDINPUT(1),        0x02,          //   INPUT (Data,Var,Abs,No Wrap,Linear,Preferred State,No Null Position)
-  END_COLLECTION(0),                  // END_COLLECTION
-  0x05, 0x01,                     // Usage Page (Generic Desktop)
-  0x09, 0x04,                     // Usage (Joystick)
-  0xA1, 0x01,                     // Collection (Application)
-  REPORT_ID(1), GAMEPAD_ID,
-  0x15, 0x00,                     //   Logical Minimum (0)
-  0x25, 0x01,                     //   Logical Maximum (1)
-  0x75, 0x01,                     //   Report Size (1)
-  0x95, 0x20,                     //   Report Count (32)
-  0x05, 0x09,                     //   Usage Page (Button)
-  0x19, 0x01,                     //   Usage Minimum (Button #1)
-  0x29, 0x20,                     //   Usage Maximum (Button #32)
-  0x81, 0x02,                     //   Input (variable,absolute)
-  0x15, 0x00,                     //   Logical Minimum (0)
-  0x25, 0x07,                     //   Logical Maximum (7)
-  0x35, 0x00,                     //   Physical Minimum (0)
-  0x46, 0x3B, 0x01,               //   Physical Maximum (315)
-  0x75, 0x04,                     //   Report Size (4)
-  0x95, 0x01,                     //   Report Count (1)
-  0x65, 0x14,                     //   Unit (20)
-  0x05, 0x01,                     //   Usage Page (Generic Desktop)
-  0x09, 0x39,                     //   Usage (Hat switch)
-  0x81, 0x42,                     //   Input (variable,absolute,null_state)
-  0x05, 0x01,                     //   Usage Page (Generic Desktop)
-  0x09, 0x01,                     //   Usage (Pointer)
-  0xA1, 0x00,                     //   Collection ()
-  0x15, 0x00,                     //     Logical Minimum (0)
-  0x26, 0xFF, 0x03,               //     Logical Maximum (1023)
-  0x75, 0x0A,                     //     Report Size (10)
-  0x95, 0x04,                     //     Report Count (4)
-  0x09, 0x30,                     //     Usage (X)
-  0x09, 0x31,                     //     Usage (Y)
-  0x09, 0x32,                     //     Usage (Z)
-  0x09, 0x35,                     //     Usage (Rz)
-  0x81, 0x02,                     //     Input (variable,absolute)
-  0xC0,                           //   End Collection
-  0x15, 0x00,                     //   Logical Minimum (0)
-  0x26, 0xFF, 0x03,               //   Logical Maximum (1023)
-  0x75, 0x0A,                     //   Report Size (10)
-  0x95, 0x02,                     //   Report Count (2)
-  0x09, 0x36,                     //   Usage (Slider)
-  0x09, 0x36,                     //   Usage (Slider)
-  0x81, 0x02,                     //   Input (variable,absolute)
-  0xC0                            // End Collection*/
-  // ------------------------------------------------- Gamepad
-  /*
-  USAGE_PAGE(1),       0x01, // USAGE_PAGE (Generic Desktop)
-  USAGE(1),            0x05, // USAGE (Gamepad)
-  COLLECTION(1),       0x01, // COLLECTION (Application)
-  REPORT_ID(1),       GAMEPAD_ID,   //   REPORT_ID (1)
-  //USAGE(1),            0x01, //   USAGE (Pointer)
-  COLLECTION(1),       0x00, //   COLLECTION (Physical)
-
-  // ------------------------------------------------- Buttons (1 to 32)
-  USAGE_PAGE(1),       0x09, //     USAGE_PAGE (Button)
-  USAGE_MINIMUM(1),    0x01, //     USAGE_MINIMUM (Button 1)
-  USAGE_MAXIMUM(1),    0x20, //     USAGE_MAXIMUM (Button 32)
-  LOGICAL_MINIMUM(1),  0x00, //     LOGICAL_MINIMUM (0)
-  LOGICAL_MAXIMUM(1),  0x01, //     LOGICAL_MAXIMUM (1)
-  REPORT_SIZE(1),      0x01, //     REPORT_SIZE (1)
-  REPORT_COUNT(1),     0x20, //     REPORT_COUNT (32)
-  HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;32 button bits
-  // ------------------------------------------------- X/Y position, Z/rZ position
-  USAGE_PAGE(1), 	   0x01, //		USAGE_PAGE (Generic Desktop)
-  COLLECTION(1), 	   0x00, //		COLLECTION (Physical)
-  USAGE(1), 		   0x30, //     USAGE (X)
-  USAGE(1), 		   0x31, //     USAGE (Y)
-  USAGE(1), 		   0x32, //     USAGE (Z)
-  USAGE(1), 		   0x35, //     USAGE (rZ)
-  0x16, 			   0x01, 0x80,//LOGICAL_MINIMUM (-32767)
-  0x26, 			   0xFF, 0x7F,//LOGICAL_MAXIMUM (32767)
-  //LOGICAL_MINIMUM(1),  0x01, //LGICAL_MINIMUM
-  //LOGICAL_MAXIMUM(1),  0xFF,
-  REPORT_SIZE(1), 	   0x10, //		REPORT_SIZE (16)
-  REPORT_COUNT(1), 	   0x04, //		REPORT_COUNT (4)
-  HIDINPUT(1), 		   0x02, //     INPUT (Data,Var,Abs)
-  // ------------------------------------------------- Triggers
-  USAGE(1),            0x33, //     USAGE (rX) Left Trigger
-  USAGE(1),            0x34, //     USAGE (rY) Right Trigger
-  LOGICAL_MINIMUM(1),  0x81, //     LOGICAL_MINIMUM (-127)
-  LOGICAL_MAXIMUM(1),  0x7f, //     LOGICAL_MAXIMUM (127)
-  REPORT_SIZE(1),      0x08, //     REPORT_SIZE (8)
-  REPORT_COUNT(1),     0x02, //     REPORT_COUNT (2)
-  HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;4 bytes (X,Y,Z,rZ)
-  END_COLLECTION(0),		 //     END_COLLECTION (Physical)
-  
-  USAGE_PAGE(1),       0x01, //     USAGE_PAGE (Generic Desktop)
-  USAGE(1),            0x39, //     USAGE (Hat switch)
-  USAGE(1),            0x39, //     USAGE (Hat switch)
-  LOGICAL_MINIMUM(1),  0x01, //     LOGICAL_MINIMUM (1)
-  LOGICAL_MAXIMUM(1),  0x08, //     LOGICAL_MAXIMUM (8)
-  REPORT_SIZE(1),      0x04, //     REPORT_SIZE (4)
-  REPORT_COUNT(1),     0x02, //     REPORT_COUNT (2)
-  HIDINPUT(1),         0x02, //     INPUT (Data, Variable, Absolute) ;1 byte Hat1, Hat2
-
-  END_COLLECTION(0),         //     END_COLLECTION (Physical)
-  END_COLLECTION(0)          //     END_COLLECTION (Application)*/
 
 BleKeypad::BleKeypad(std::string deviceName, std::string deviceManufacturer, uint8_t batteryLevel) : 
 	hid(0), 
@@ -476,6 +212,13 @@ void BleKeypad::taskServer(void* pvParameter) {
   pAdvertising->start();
   bleKeypadInstance->hid->setBatteryLevel(bleKeypadInstance->batteryLevel);
 
+
+// Note: This is only needed to get the gamepad stuff to keep sending data after a reconnect. 
+// Suggesstion taken from https://github.com/nkolban/esp32-snippets/issues/632
+  BLEDescriptor *desc = bleKeypadInstance->inputGamepad->getDescriptorByUUID(BLEUUID((uint16_t)0x2902));
+  uint8_t val[] = {0x01, 0x00};
+  desc->setValue(val, 2);
+
   ESP_LOGD(LOG_TAG, "Advertising started!");
   vTaskDelay(portMAX_DELAY); //delay(portMAX_DELAY);
 }
@@ -486,6 +229,15 @@ void BleKeypad::sendReport(KeyReport* keys)
   {
     this->inputKeyboard->setValue((uint8_t*)keys, sizeof(KeyReport));
     this->inputKeyboard->notify();
+  }
+}
+
+void BleKeypad::sendMediaReport(uint8_t key)
+{
+  if (this->isConnected())
+  {
+    this->inputMediaKeys->setValue((uint8_t*)key, sizeof(key));
+    this->inputMediaKeys->notify();
   }
 }
 
@@ -549,15 +301,35 @@ size_t BleKeypad::presskey(uint8_t k)
 
   if (k >= 0xE9){
     switch (k){
-      case 0xE9: this->presskey(NEXT_TRACK);
-      case 0xEA: this->presskey(PREVIOUS_TRACK);
-      case 0xEB: this->presskey(MEDIA_STOP);
-      case 0xEC: this->presskey(PLAY_PAUSE);
-      case 0xED: this->presskey(MEDIA_MUTE);
-      case 0xEE: this->presskey(VOLUME_UP);
-      case 0xEF: this->presskey(VOLUME_DOWN);
+      case 0xE9: 
+        this->presskey(NEXT_TRACK);
+        k=0;
+        break;
+      case 0xEA: 
+        this->presskey(PREVIOUS_TRACK);
+        k=0;
+        break;
+      case 0xEB: 
+        this->presskey(MEDIA_STOP);
+        k=0;
+        break;
+      case 0xEC: 
+        this->presskey(PLAY_PAUSE);
+        k=0;
+        break;
+      case 0xED: 
+        this->presskey(MEDIA_MUTE);
+        k=0;
+        break;
+      case 0xEE: 
+        this->presskey(VOLUME_UP);
+        k=0;
+        break;
+      case 0xEF: 
+        this->presskey(VOLUME_DOWN);
+        k=0;
+        break;
     }
-    Serial.print("Media Key Pressed\n");
   }
 
 	// Add k to the key report only if it's not already present
@@ -578,7 +350,6 @@ size_t BleKeypad::presskey(uint8_t k)
 		}
 	}
 	sendReport(&_keyReport);
-  Serial.print("Keypress sent!\n");
 	return 1;
 }
 
@@ -586,8 +357,8 @@ size_t BleKeypad::presskey(const MediaKeyReport k)
 {
     uint16_t k_16 = k[1] | (k[0] << 8);
     uint16_t mediaKeyReport_16 = _mediaKeyReport[1] | (_mediaKeyReport[0] << 8);
-
     mediaKeyReport_16 |= k_16;
+
     _mediaKeyReport[0] = (uint8_t)((mediaKeyReport_16 & 0xFF00) >> 8);
     _mediaKeyReport[1] = (uint8_t)(mediaKeyReport_16 & 0x00FF);
 

@@ -16,3 +16,8 @@ void KeypadOutputCallbacks::onWrite(BLECharacteristic* me) {
   ESP_LOGI(LOG_TAG, "special keys: %d", *value);
 }
 
+/*void KeypadOutputCallbacks::onConnect(BLEServer* pServer){
+  BLEDescriptor *desc = blekeypadInstance->inputGamepad->getDescriptorByUUID(BLEUUID((uint16_t)0x2902));
+  uint8_t val[] = {0x01, 0x00};
+  desc->setValue(val, 2);
+}*/

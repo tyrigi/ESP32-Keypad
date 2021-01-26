@@ -12,6 +12,7 @@ class KeypadOutputCallbacks : public BLECharacteristicCallbacks
 public:
   KeypadOutputCallbacks(void);
   void onWrite(BLECharacteristic* me);
+  //void onConnect(BLEServer* pServer);
 };
 
 #endif // CONFIG_BT_ENABLED

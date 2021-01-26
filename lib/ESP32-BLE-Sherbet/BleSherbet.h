@@ -122,9 +122,9 @@ const uint8_t KEY_DOWN_ARROW = 0xD9;
 const uint8_t KEY_LEFT_ARROW = 0xD8;
 const uint8_t KEY_RIGHT_ARROW = 0xD7;
 const uint8_t KEY_BACKSPACE = 0xB2;
-const uint8_t KEY_TAB = 0xB3;
+const uint8_t KEY_TAB = 0x2B;
 const uint8_t KEY_RETURN = 0xB0;
-const uint8_t KEY_ESC = 0xB1;
+const uint8_t KEY_ESC = 0x29;
 const uint8_t KEY_INSERT = 0xD1;
 const uint8_t KEY_DELETE = 0xD4;
 const uint8_t KEY_PAGE_UP = 0xD3;
@@ -156,6 +156,7 @@ const uint8_t KEY_F21 = 0xF8;
 const uint8_t KEY_F22 = 0xF9;
 const uint8_t KEY_F23 = 0xFA;
 const uint8_t KEY_F24 = 0xFB;
+const uint8_t KEY_PLAY_PAUSE = 0xCD;
 
 typedef uint8_t MediaKeyReport[2];
 
@@ -199,6 +200,7 @@ public:
   void begin(bool autoReport = true);
   void end(void);
   void sendReport(KeyReport* keys);
+  void sendMediaReport(uint8_t key);
   void sendReport(MediaKeyReport* keys);
   size_t presskey(uint8_t k);
   size_t presskey(const MediaKeyReport k);
@@ -253,6 +255,7 @@ private:
   MediaKeyReport _mediaKeyReport;
   void buttons(uint32_t b);
   void rawAction(uint8_t msg[], char msgSize);
+  void onConnect(BLEServer* pServer);
   static void taskServer(void* pvParameter);
 protected:
   virtual void onStarted(BLEServer *pServer) { };

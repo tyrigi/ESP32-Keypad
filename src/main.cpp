@@ -26,10 +26,10 @@ const int JOY_MIN = -32767;
 const int JOY_MAX = 32767;
 
 const int rowPins[] = {16, 17, 18, 19};
-const int colPins[] = {27, 26, 25, 23, 22, 21};
-const int buttonPins[] = {12};
-const int modePins[] = {18, 19, 20};
-const int ledPins[] = {16, 17, 21};
+const int colPins[] = {21, 22, 23, 25, 26, 27};
+const int buttonPins[] = {15};
+const int modePins[] = {2, 4, 5};
+const int ledPins[] = {12, 13, 14};
 
 Bounce btnDebounce[BTN_COUNT];
 Bounce switches[ROW_COUNT][COL_COUNT];
@@ -42,18 +42,25 @@ boolean keyStatus[ROW_COUNT][COL_COUNT];
 BleKeypad bleKeypad;
 
 int keyLayer = 0;
-const int totalKeyLayers = 3;
+const int totalKeyLayers = 2;
 
 int x_read = 0;
 int y_read = 0;
 int axes_current[] = {512, 512};
 int axes_prev[] = {0,0};
-const int keyMap[ROW_COUNT][COL_COUNT] = {
+const int keyMap[totalKeyLayers][ROW_COUNT][COL_COUNT] = {
+{
 	{KEY_ESC, KEY_O, KEY_I, KEY_Q, KEY_V, KEY_T},
-	{KEY_MEDIA_PREVIOUS_TRACK, KEY_J, KEY_X, KEY_LEFT_ALT, KEY_E, KEY_R},
-	{KEY_MEDIA_PLAY_PAUSE, KEY_LEFT_CTRL, KEY_TAB, KEY_LEFT_SHIFT, KEY_SPACE, KEY_F},
-	{KEY_MEDIA_NEXT_TRACK, KEY_S, KEY_W, KEY_C, KEY_Z, KEY_M}
-};
+	{KEY_P, KEY_J, KEY_X, KEY_LEFT_ALT, KEY_E, KEY_R},
+	{KEY_L, KEY_LEFT_CTRL, KEY_TAB, KEY_LEFT_SHIFT, KEY_SPACE, KEY_F},
+	{KEY_K, KEY_S, KEY_W, KEY_C, KEY_Z, KEY_M}
+},
+{
+	{BUTTON_1,BUTTON_2,BUTTON_3,BUTTON_4,BUTTON_5,BUTTON_6},
+	{BUTTON_7,BUTTON_8,BUTTON_9,BUTTON_10,BUTTON_11,BUTTON_12},
+	{BUTTON_13,BUTTON_14,BUTTON_15,BUTTON_16,BUTTON_17,BUTTON_18},
+	{BUTTON_19,BUTTON_20,BUTTON_21,BUTTON_22,BUTTON_23,BUTTON_24}
+}};
 
 void keyScanner() {
 	for (int col = 0; col < COL_COUNT; col++){
@@ -64,34 +71,34 @@ void keyScanner() {
 		//Scan all buttons in the column for changes
 		for (int row = 0; row < ROW_COUNT; row++){
 			switches[row][col].update();
-			//Serial.print("Checking keys...\n");
 			if (switches[row][col].fell()){
-				Serial.print(keyMap[row][col], HEX);
+				Serial.print(keyMap[keyLayer][row][col], HEX);
 				Serial.print(" was pressed\n");
-				bleKeypad.presskey(keyMap[row][col]);
-				//if (keyLayer != 2){
-				//	bleKeypad.presskey(keyMap[row][col]);
-				//} else if (keyLayer == 2){
-					//XInput.setButton(keyMap[keyLayer][row][col], 1);
-					//buttonPress(keyMap[keyLayer][row][col]);
-					//Joystick.button(keyMap[row][col], 1);
-				//}
+				if (keyLayer != 1){
+					bleKeypad.presskey(keyMap[keyLayer][row][col]);
+					return;
+				} else if (keyLayer == 1){
+					bleKeypad.press(keyMap[keyLayer][row][col]);
+					bleKeypad.sendReport();
+					return;
+				}
 			} else if (switches[row][col].rose()){
-				Serial.print(keyMap[row][col], HEX);
+				Serial.print(keyMap[keyLayer][row][col], HEX);
 				Serial.print(" was released\n");
-				bleKeypad.releasekey(keyMap[row][col]);
-				//if (keyLayer !=2){
-				//	bleKeypad.releasekey(keyMap[row][col]);
-				//} else if (keyLayer == 2){
-					//XInput.setButton(keyMap[keyLayer][row][col], 0);
-					//buttonRelease(keyMap[keyLayer][row][col]);
-					//Joystick.button(keyMap[keyLayer][row][col], 0);
-				//}
+				if (keyLayer !=1){
+					bleKeypad.releasekey(keyMap[keyLayer][row][col]);
+					return;
+				} else if (keyLayer == 1){
+					bleKeypad.release(keyMap[keyLayer][row][col]);
+					bleKeypad.sendReport();
+					return;
+				}
 			}
 		}
 		
 		//Switch off the current column
-		pinMode(colPins[col], INPUT);
+		//pinMode(colPins[col], INPUT);
+		digitalWrite(colPins[col], HIGH);
 	}
 }
 
@@ -112,7 +119,20 @@ void joyScanner(){
 		//Reversed y axis
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
 	}
-	bleKeypad.setAxes(axes_current[0], axes_current[1],0,0,0,0, DPAD_CENTERED);
+	//bleKeypad.setAxes(axes_current[0], axes_current[1],0,0,0,0, DPAD_CENTERED);
+	bleKeypad.setX(axes_current[0]);
+	bleKeypad.setY(axes_current[1]);
+	bleKeypad.sendReport();
+}
+
+void modeScanner(){
+	btnDebounce[0].update();
+	if (btnDebounce[0].fell()){
+		keyLayer++;
+	}
+	if (keyLayer>1){
+		keyLayer = 0;
+	}
 }
 
 void setup() {
@@ -122,7 +142,9 @@ void setup() {
 	
 	//Set all columns to INPUT (high-impedance)
 	for (int col = 0; col < COL_COUNT; col++){
-		pinMode(colPins[col], INPUT);
+		//pinMode(colPins[col], INPUT);
+		pinMode(colPins[col], OUTPUT);
+		digitalWrite(colPins[col], HIGH);
 	}
 	
 	//Create one debounce object per key
@@ -156,7 +178,7 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   if(bleKeypad.isConnected()) {
-    //modeScanner();
+      modeScanner();
 	  keyScanner();
 	  joyScanner();
 	  delay(SCAN_DELAY);

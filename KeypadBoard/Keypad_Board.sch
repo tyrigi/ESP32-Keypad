@@ -7388,11 +7388,6 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 </net>
 <net name="BAT" class="0">
 <segment>
-<pinref part="U1" gate="G$1" pin="IO32"/>
-<wire x1="274.32" y1="104.14" x2="284.48" y2="104.14" width="0.1524" layer="91"/>
-<label x="276.86" y="104.14" size="1.778" layer="95"/>
-</segment>
-<segment>
 <pinref part="U2" gate="G$1" pin="BAT"/>
 <wire x1="129.54" y1="60.96" x2="119.38" y2="60.96" width="0.1524" layer="91"/>
 <label x="121.92" y="60.96" size="1.778" layer="95"/>

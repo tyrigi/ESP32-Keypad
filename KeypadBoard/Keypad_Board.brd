@@ -1429,15 +1429,9 @@ design rules under a new name.</description>
 <contactref element="J8" pad="2"/>
 </signal>
 <signal name="BAT">
-<contactref element="U1" pad="8"/>
 <contactref element="U2" pad="8"/>
 <contactref element="Q1" pad="3"/>
 <contactref element="J6" pad="2"/>
-<wire x1="22.86" y1="61.13" x2="28.872" y2="61.13" width="0.508" layer="1"/>
-<wire x1="28.872" y1="61.13" x2="29.972" y2="62.23" width="0.508" layer="1"/>
-<wire x1="29.972" y1="62.23" x2="29.972" y2="64.262" width="0.508" layer="1"/>
-<wire x1="30.66" y1="64.95" x2="32.14" y2="64.95" width="0.508" layer="1"/>
-<wire x1="29.972" y1="64.262" x2="30.66" y2="64.95" width="0.508" layer="1"/>
 <wire x1="22.86" y1="61.13" x2="22.69" y2="60.96" width="0.508" layer="1"/>
 <wire x1="22.69" y1="60.96" x2="17.78" y2="60.96" width="0.508" layer="1"/>
 <wire x1="17.78" y1="60.96" x2="13.97" y2="60.96" width="0.508" layer="1"/>
