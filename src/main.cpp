@@ -16,12 +16,12 @@ const bool REV_X = true;
 const bool REV_Y = true;
 const int MIN_ADC = 0;
 const int MAX_ADC = 4096;
-const int MIN_X = 500;
-const int CNTR_X = 1350;
-const int MAX_X = 3500;
-const int MIN_Y = 700;
-const int CNTR_Y = 1250;
-const int MAX_Y = 3500;
+static int MIN_X = 400;
+static int CNTR_X = 1350;
+static int MAX_X = 2800;
+static int MIN_Y = 400;
+static int CNTR_Y = 1250;
+static int MAX_Y = 2800;
 const int JOY_MIN = -32767;
 const int JOY_MAX = 32767;
 
@@ -61,6 +61,26 @@ const int keyMap[totalKeyLayers][ROW_COUNT][COL_COUNT] = {
 	{BUTTON_13,BUTTON_14,BUTTON_15,BUTTON_16,BUTTON_17,BUTTON_18},
 	{BUTTON_19,BUTTON_20,BUTTON_21,BUTTON_22,BUTTON_23,BUTTON_24}
 }};
+
+void stickCal(){
+	CNTR_X = analogRead(JOY_X_PIN);
+	CNTR_Y = analogRead(JOY_Y_PIN);
+}
+
+int reMap(int in, int in_low, int in_high, int out_low, int out_high, int cntr){
+	if (in<cntr){
+		float in_ratio = (cntr-in)/(cntr-in_low);
+		float out_cntr = ((out_high - out_low)/2) + out_low;
+		int out = ((out_cntr - out_low) * in_ratio ) + out_low;
+		return out;
+	} else {
+		float in_ratio = (in_high - in)/(in_high - cntr);
+		float out_cntr = ((out_high - out_low)/2) + out_low;
+		int out = ((out_high - out_cntr)* in_ratio);
+		return out;
+	}
+	return 0;
+}
 
 void keyScanner() {
 	for (int col = 0; col < COL_COUNT; col++){
@@ -105,19 +125,35 @@ void keyScanner() {
 void joyScanner(){
 	x_read = analogRead(JOY_X_PIN);
 	y_read = analogRead(JOY_Y_PIN);
+	if (x_read > MAX_X){
+		MAX_X = x_read;
+	}
+	if (x_read < MIN_X){
+		MIN_X = x_read;
+	}
+	if (y_read > MAX_Y){
+		MAX_Y = y_read;
+	}
+	if (y_read < MIN_Y){
+		MIN_Y = y_read;
+	}
 	if (!REV_X){
 		//Update analog stick values with current deflection
 		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MIN, JOY_MAX);
+		//axes_current[0] = reMap(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MIN, JOY_MAX, CNTR_X);
 	} else {
 		//Reversed X axis
 		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MAX, JOY_MIN);
+		//axes_current[0] = reMap(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MAX, JOY_MIN, CNTR_X);
 	}
 	if (!REV_Y){
 		//Update analog stick values with current deflection
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX);
+		//axes_current[1] = reMap(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX, CNTR_Y);
 	} else {
 		//Reversed y axis
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
+		//axes_current[1] = reMap(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN, CNTR_Y);
 	}
 	//bleKeypad.setAxes(axes_current[0], axes_current[1],0,0,0,0, DPAD_CENTERED);
 	bleKeypad.setX(axes_current[0]);
@@ -172,6 +208,7 @@ void setup() {
 		debouncer.interval(DEBOUNCE);
 		modeDebounce[mode] = debouncer;
 	}
+	stickCal();
 	Serial.print("Setup complete\n");
 }
 
