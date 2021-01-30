@@ -25,6 +25,15 @@ static int MAX_Y = 2800;
 const int JOY_MIN = -32767;
 const int JOY_MAX = 32767;
 
+const int BAT_PIN = 32;
+const int BAT_MAX = 3960;
+const int BAT_MIN = 2925;
+const int LEVEL_SAMPLES = 128;
+static int BAT_LEVEL = 100;
+static int AVG_BAT_LEVEL = 0;
+static int BAT_ADC = 3960;
+static int MEASURE_COUNT = 0;
+
 const int rowPins[] = {16, 17, 18, 19};
 const int colPins[] = {21, 22, 23, 25, 26, 27};
 const int buttonPins[] = {15};
@@ -65,21 +74,6 @@ const int keyMap[totalKeyLayers][ROW_COUNT][COL_COUNT] = {
 void stickCal(){
 	CNTR_X = analogRead(JOY_X_PIN);
 	CNTR_Y = analogRead(JOY_Y_PIN);
-}
-
-int reMap(int in, int in_low, int in_high, int out_low, int out_high, int cntr){
-	if (in<cntr){
-		float in_ratio = (cntr-in)/(cntr-in_low);
-		float out_cntr = ((out_high - out_low)/2) + out_low;
-		int out = ((out_cntr - out_low) * in_ratio ) + out_low;
-		return out;
-	} else {
-		float in_ratio = (in_high - in)/(in_high - cntr);
-		float out_cntr = ((out_high - out_low)/2) + out_low;
-		int out = ((out_high - out_cntr)* in_ratio);
-		return out;
-	}
-	return 0;
 }
 
 void keyScanner() {
@@ -140,20 +134,16 @@ void joyScanner(){
 	if (!REV_X){
 		//Update analog stick values with current deflection
 		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MIN, JOY_MAX);
-		//axes_current[0] = reMap(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MIN, JOY_MAX, CNTR_X);
 	} else {
 		//Reversed X axis
 		axes_current[0] = map(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MAX, JOY_MIN);
-		//axes_current[0] = reMap(constrain(x_read, MIN_ADC, MAX_ADC), MIN_X, MAX_X, JOY_MAX, JOY_MIN, CNTR_X);
 	}
 	if (!REV_Y){
 		//Update analog stick values with current deflection
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX);
-		//axes_current[1] = reMap(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MIN, JOY_MAX, CNTR_Y);
 	} else {
 		//Reversed y axis
 		axes_current[1] = map(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN);
-		//axes_current[1] = reMap(constrain(y_read, MIN_ADC, MAX_ADC), MIN_Y, MAX_Y, JOY_MAX, JOY_MIN, CNTR_Y);
 	}
 	//bleKeypad.setAxes(axes_current[0], axes_current[1],0,0,0,0, DPAD_CENTERED);
 	bleKeypad.setX(axes_current[0]);
@@ -169,6 +159,24 @@ void modeScanner(){
 	if (keyLayer>1){
 		keyLayer = 0;
 	}
+}
+
+void updateBatLevel(){
+	MEASURE_COUNT++;
+	BAT_ADC = analogRead(BAT_PIN);
+	BAT_LEVEL = map(constrain(BAT_ADC, BAT_MIN, BAT_MAX), BAT_MIN, BAT_MAX, 0, 100);
+	AVG_BAT_LEVEL += BAT_LEVEL;
+	if (MEASURE_COUNT == LEVEL_SAMPLES){
+		AVG_BAT_LEVEL = AVG_BAT_LEVEL/LEVEL_SAMPLES;
+		bleKeypad.setBatteryLevel(AVG_BAT_LEVEL);
+		Serial.print(AVG_BAT_LEVEL, DEC);
+		Serial.print("\n");
+		MEASURE_COUNT = 0;
+		AVG_BAT_LEVEL = 0;
+	}
+	//bleKeypad.setBatteryLevel(BAT_LEVEL);
+	//Serial.print(BAT_LEVEL, DEC);
+	//Serial.print("\n");
 }
 
 void setup() {
@@ -218,6 +226,7 @@ void loop() {
       modeScanner();
 	  keyScanner();
 	  joyScanner();
+	  updateBatLevel();
 	  delay(SCAN_DELAY);
   }
 }
