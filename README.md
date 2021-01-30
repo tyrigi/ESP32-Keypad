@@ -11,3 +11,7 @@ The library I'm using is a combination of the following two libraries:
 [ESP32-BLE-Gamepad](https://github.com/lemmingDev/ESP32-BLE-Gamepad) written by [lemmingDev](https://github.com/lemmingDev)
 
 I've created a breakout board with an ESP32-WROOM-32E chip that has support for a Li-Ion battery. The Eagle design files, datasheets for critical parts, and a DigiKey BOM have been included for anyone wanting to make one of these for themselves!
+
+Notes:
+
+There have been some issues with my board files. As a disclaimer, older versions of the PCB have pin 12 connected directly to Battery +. I wanted to use the ADC on pin 12 to measure battery voltage, and from there remaining battery capacity. I forgot however that a fully charged Li-Ion battery is 4.2V, which exceeds the ESP32's max input voltage by 0.5V. Not enough to fry the chip, but more than enough to damage the pin. The end effect is that this blasts the UART RX channel in the chip with 4V, rendering the ESP unable to receive new code over the UART interface. So if you're using an old board version, make sure to cut the trace going to I/O pin 12. You've been warned.
