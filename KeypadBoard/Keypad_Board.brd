@@ -1237,6 +1237,10 @@ design rules under a new name.</description>
 <attribute name="PROD_ID" value="RES-09883" x="28.575" y="60.198" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="VALUE" x="27.686" y="60.198" size="0.6096" layer="27" font="vector" ratio="20" rot="R270" align="top-center"/>
 </element>
+<element name="J9" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" package="1X06_LOCK" package3d_urn="urn:adsk.eagle:package:38002/1" value="" x="13.97" y="38.1" smashed="yes">
+<attribute name="NAME" x="12.7" y="39.497" size="0.6096" layer="25" font="vector" ratio="20"/>
+<attribute name="VALUE" x="12.7" y="35.814" size="0.6096" layer="27" font="vector" ratio="20"/>
+</element>
 </elements>
 <signals>
 <signal name="ROW1">
@@ -1437,6 +1441,8 @@ design rules under a new name.</description>
 </polygon>
 <contactref element="J8" pad="2"/>
 <contactref element="R12" pad="2"/>
+<contactref element="J9" pad="6"/>
+<wire x1="26.67" y1="46.86" x2="26.67" y2="37.846" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="BAT">
 <contactref element="U2" pad="8"/>
@@ -1476,6 +1482,8 @@ design rules under a new name.</description>
 <wire x1="12.446" y1="81.026" x2="12.446" y2="78.232" width="0.1524" layer="1"/>
 <wire x1="12.446" y1="78.232" x2="15.108" y2="75.57" width="0.1524" layer="1"/>
 <wire x1="15.108" y1="75.57" x2="16.15" y2="75.57" width="0.1524" layer="1"/>
+<contactref element="J9" pad="5"/>
+<wire x1="24.13" y1="38.1" x2="21.91" y2="63.23" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="ADJ">
 <contactref element="I1" pad="7"/>
@@ -1571,6 +1579,14 @@ design rules under a new name.</description>
 <wire x1="19.265" y1="53.975" x2="21.082" y2="53.975" width="0.1524" layer="1"/>
 <wire x1="21.082" y1="53.975" x2="22.225" y2="52.832" width="0.1524" layer="1"/>
 <wire x1="22.225" y1="52.832" x2="22.225" y2="52.1462" width="0.1524" layer="1"/>
+<contactref element="J3" pad="4"/>
+<wire x1="13.97" y1="43.18" x2="20.32" y2="43.18" width="0.1524" layer="16"/>
+<wire x1="20.32" y1="43.18" x2="22.86" y2="45.72" width="0.1524" layer="16"/>
+<wire x1="22.86" y1="45.72" x2="22.86" y2="46.863" width="0.1524" layer="16"/>
+<wire x1="22.86" y1="46.863" x2="22.225" y2="47.498" width="0.1524" layer="16"/>
+<via x="22.225" y="47.498" extent="1-16" drill="0.35"/>
+<wire x1="22.225" y1="47.498" x2="21.043" y2="47.498" width="0.1524" layer="1"/>
+<wire x1="21.043" y1="47.498" x2="20.955" y2="47.41" width="0.1524" layer="1"/>
 </signal>
 <signal name="3V3">
 <contactref element="I1" pad="5"/>
@@ -1611,10 +1627,6 @@ design rules under a new name.</description>
 <wire x1="54.61" y1="43.18" x2="41.91" y2="43.18" width="0.1524" layer="1"/>
 <wire x1="41.91" y1="43.18" x2="40.64" y2="44.45" width="0.1524" layer="1"/>
 <wire x1="40.64" y1="44.45" x2="40.64" y2="47.36" width="0.1524" layer="1"/>
-<contactref element="J3" pad="4"/>
-<wire x1="13.97" y1="43.18" x2="16.51" y2="43.18" width="0.1524" layer="16"/>
-<wire x1="19.05" y1="45.72" x2="19.05" y2="48.26" width="0.1524" layer="16"/>
-<wire x1="16.51" y1="43.18" x2="19.05" y2="45.72" width="0.1524" layer="16"/>
 </signal>
 <signal name="N$9">
 <contactref element="C6" pad="1"/>
@@ -1672,7 +1684,6 @@ design rules under a new name.</description>
 </signal>
 <signal name="BTN1">
 <contactref element="J8" pad="3"/>
-<contactref element="U1" pad="23"/>
 <wire x1="54.61" y1="48.26" x2="53.34" y2="48.26" width="0.1524" layer="1"/>
 <wire x1="53.34" y1="48.26" x2="50.8" y2="50.8" width="0.1524" layer="1"/>
 <via x="50.8" y="50.8" extent="1-16" drill="0.35"/>
@@ -1680,7 +1691,8 @@ design rules under a new name.</description>
 <wire x1="44.45" y1="57.15" x2="44.45" y2="58.42" width="0.1524" layer="16"/>
 <via x="44.45" y="58.42" extent="1-16" drill="0.35"/>
 <wire x1="44.45" y1="58.42" x2="45.085" y2="57.785" width="0.1524" layer="1"/>
-<wire x1="45.085" y1="57.785" x2="45.085" y2="56.33" width="0.1524" layer="1"/>
+<contactref element="U1" pad="29"/>
+<wire x1="44.45" y1="58.42" x2="49.14" y2="62.41" width="0" layer="19" extent="1-1"/>
 </signal>
 <signal name="BAT_ADC">
 <contactref element="R12" pad="1"/>
@@ -1692,6 +1704,27 @@ design rules under a new name.</description>
 <wire x1="30.48" y1="61.203" x2="30.48" y2="63.7932875" width="0.1524" layer="1"/>
 <wire x1="28.575" y1="59.298" x2="30.11" y2="57.763" width="0.1524" layer="1"/>
 <wire x1="30.11" y1="57.763" x2="30.11" y2="52.07" width="0.1524" layer="1"/>
+</signal>
+<signal name="MISO">
+<contactref element="U1" pad="14"/>
+<contactref element="J9" pad="4"/>
+<wire x1="21.59" y1="37.846" x2="32.14" y2="57.33" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="MOSI">
+<contactref element="U1" pad="16"/>
+<contactref element="J9" pad="3"/>
+<wire x1="19.05" y1="38.1" x2="36.195" y2="56.33" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="CLK">
+<contactref element="U1" pad="13"/>
+</signal>
+<signal name="CS">
+<contactref element="U1" pad="23"/>
+<contactref element="J9" pad="1"/>
+<wire x1="13.97" y1="38.1" x2="45.085" y2="56.33" width="0" layer="19" extent="1-1"/>
+</signal>
+<signal name="SCK">
+<contactref element="J9" pad="2"/>
 </signal>
 </signals>
 <mfgpreviewcolors>

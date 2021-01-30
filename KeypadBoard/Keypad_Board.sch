@@ -6969,6 +6969,7 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <part name="R12" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="0.22OHM" device="-0805-1/4W-1%" package3d_urn="urn:adsk.eagle:package:39651/1" value="330K"/>
 <part name="R13" library="SparkFun-Resistors" library_urn="urn:adsk.eagle:library:532" deviceset="0.22OHM" device="-0805-1/4W-1%" package3d_urn="urn:adsk.eagle:package:39651/1" value="120K"/>
 <part name="SUPPLY11" library="supply2" library_urn="urn:adsk.eagle:library:372" deviceset="GND" device=""/>
+<part name="J9" library="SparkFun-Connectors" library_urn="urn:adsk.eagle:library:513" deviceset="CONN_06" device="LOCK" package3d_urn="urn:adsk.eagle:package:38002/1"/>
 </parts>
 <sheets>
 <sheet>
@@ -7143,6 +7144,10 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 </instance>
 <instance part="SUPPLY11" gate="GND" x="114.3" y="93.98" smashed="yes">
 <attribute name="VALUE" x="112.395" y="90.805" size="1.778" layer="96"/>
+</instance>
+<instance part="J9" gate="G$1" x="322.58" y="101.6" smashed="yes" rot="R180">
+<attribute name="VALUE" x="327.66" y="111.506" size="1.778" layer="96" font="vector" rot="R180"/>
+<attribute name="NAME" x="327.66" y="90.932" size="1.778" layer="95" font="vector" rot="R180"/>
 </instance>
 </instances>
 <busses>
@@ -7399,6 +7404,11 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <pinref part="R12" gate="G$1" pin="2"/>
 <wire x1="114.3" y1="96.52" x2="114.3" y2="99.06" width="0.1524" layer="91"/>
 </segment>
+<segment>
+<pinref part="J9" gate="G$1" pin="6"/>
+<wire x1="317.5" y1="93.98" x2="304.8" y2="93.98" width="0.1524" layer="91"/>
+<label x="307.34" y="93.98" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="BAT" class="0">
 <segment>
@@ -7445,6 +7455,11 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <pinref part="J7" gate="G$1" pin="1"/>
 <wire x1="76.2" y1="99.06" x2="88.9" y2="99.06" width="0.1524" layer="91"/>
 <label x="81.28" y="99.06" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="J9" gate="G$1" pin="5"/>
+<wire x1="317.5" y1="96.52" x2="304.8" y2="96.52" width="0.1524" layer="91"/>
+<label x="307.34" y="96.52" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="ADJ" class="0">
@@ -7580,6 +7595,11 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <wire x1="76.2" y1="129.54" x2="88.9" y2="129.54" width="0.1524" layer="91"/>
 <label x="81.28" y="129.54" size="1.778" layer="95"/>
 </segment>
+<segment>
+<pinref part="J3" gate="G$1" pin="4"/>
+<wire x1="317.5" y1="76.2" x2="307.34" y2="76.2" width="0.1524" layer="91"/>
+<label x="302.26" y="76.2" size="1.778" layer="95"/>
+</segment>
 </net>
 <net name="3V3" class="0">
 <segment>
@@ -7616,11 +7636,6 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <pinref part="J8" gate="G$1" pin="1"/>
 <wire x1="317.5" y1="50.8" x2="307.34" y2="50.8" width="0.1524" layer="91"/>
 <label x="307.34" y="50.8" size="1.778" layer="95"/>
-</segment>
-<segment>
-<pinref part="J3" gate="G$1" pin="4"/>
-<wire x1="317.5" y1="76.2" x2="307.34" y2="76.2" width="0.1524" layer="91"/>
-<label x="302.26" y="76.2" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="N$9" class="0">
@@ -7682,9 +7697,9 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <label x="307.34" y="45.72" size="1.778" layer="95"/>
 </segment>
 <segment>
-<pinref part="U1" gate="G$1" pin="IO15"/>
-<wire x1="274.32" y1="132.08" x2="284.48" y2="132.08" width="0.1524" layer="91"/>
-<label x="276.86" y="132.08" size="1.778" layer="95"/>
+<pinref part="U1" gate="G$1" pin="IO5"/>
+<wire x1="274.32" y1="142.24" x2="284.48" y2="142.24" width="0.1524" layer="91"/>
+<label x="276.86" y="142.24" size="1.778" layer="95"/>
 </segment>
 </net>
 <net name="BAT_ADC" class="0">
@@ -7699,6 +7714,56 @@ SparkFun BigTime Watch Kit&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;
 <pinref part="U1" gate="G$1" pin="IO32"/>
 <wire x1="274.32" y1="104.14" x2="284.48" y2="104.14" width="0.1524" layer="91"/>
 <label x="276.86" y="104.14" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="MISO" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="IO12"/>
+<wire x1="274.32" y1="139.7" x2="284.48" y2="139.7" width="0.1524" layer="91"/>
+<label x="276.86" y="139.7" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="J9" gate="G$1" pin="4"/>
+<wire x1="317.5" y1="99.06" x2="304.8" y2="99.06" width="0.1524" layer="91"/>
+<label x="307.34" y="99.06" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="MOSI" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="IO13"/>
+<wire x1="274.32" y1="137.16" x2="284.48" y2="137.16" width="0.1524" layer="91"/>
+<label x="276.86" y="137.16" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="J9" gate="G$1" pin="3"/>
+<wire x1="317.5" y1="101.6" x2="304.8" y2="101.6" width="0.1524" layer="91"/>
+<label x="307.34" y="101.6" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CLK" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="IO14"/>
+<wire x1="274.32" y1="134.62" x2="284.48" y2="134.62" width="0.1524" layer="91"/>
+<label x="276.86" y="134.62" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="CS" class="0">
+<segment>
+<pinref part="U1" gate="G$1" pin="IO15"/>
+<wire x1="274.32" y1="132.08" x2="284.48" y2="132.08" width="0.1524" layer="91"/>
+<label x="276.86" y="132.08" size="1.778" layer="95"/>
+</segment>
+<segment>
+<pinref part="J9" gate="G$1" pin="1"/>
+<wire x1="317.5" y1="106.68" x2="304.8" y2="106.68" width="0.1524" layer="91"/>
+<label x="307.34" y="106.68" size="1.778" layer="95"/>
+</segment>
+</net>
+<net name="SCK" class="0">
+<segment>
+<pinref part="J9" gate="G$1" pin="2"/>
+<wire x1="317.5" y1="104.14" x2="304.8" y2="104.14" width="0.1524" layer="91"/>
+<label x="307.34" y="104.14" size="1.778" layer="95"/>
 </segment>
 </net>
 </nets>
