@@ -235,6 +235,7 @@ public:
   void setAutoReport(bool autoReport = true);
   void sendReport();
   bool isPressed(uint32_t b = BUTTON_1); // check BUTTON_1 by default
+  void sendUpdate();
 private:
   BLEHIDDevice* hid;
   uint32_t _buttons;

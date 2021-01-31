@@ -153,7 +153,7 @@ BleKeypad::BleKeypad(std::string deviceName, std::string deviceManufacturer, uin
 
 void BleKeypad::begin(bool autoReport)
 {
-  Serial.begin(115200);
+  //Serial.begin(115200);
   _autoReport = autoReport;
   xTaskCreate(this->taskServer, "server", 20000, (void *)this, 5, NULL);
   //reset();
@@ -223,6 +223,12 @@ void BleKeypad::taskServer(void* pvParameter) {
   vTaskDelay(portMAX_DELAY); //delay(portMAX_DELAY);
 }
 
+void BleKeypad::sendUpdate()
+{
+  this->inputKeyboard->notify();
+  this->inputGamepad->notify();
+}
+
 void BleKeypad::sendReport(KeyReport* keys)
 {
   if (this->isConnected())
@@ -273,7 +279,7 @@ void BleKeypad::sendReport(void)
 		if (m[12] == -128) { m[12] = -127; }
 		if (m[13] == -128) { m[13] = -127; }
 		this->inputGamepad->setValue(m, sizeof(m));
-		this->inputGamepad->notify();
+		//this->inputGamepad->notify();
     //Serial.print(m[5], HEX);
     //Serial.print(m[4], HEX);
     //Serial.print("X\n");
@@ -289,14 +295,14 @@ uint8_t USBPutChar(uint8_t c);
 size_t BleKeypad::presskey(uint8_t k)
 {
 	uint8_t i;
-  Serial.print("Pressing key ");
-  Serial.print(k, HEX);
-  Serial.print("\n");
+  //Serial.print("Pressing key ");
+  //Serial.print(k, HEX);
+  //Serial.print("\n");
     
 	if (k >= 128 && k <= 135) {			// it's a modifier key
 		_keyReport.modifiers |= (1<<k);
     k = 0;
-    Serial.print("modifier key pressed\n");
+    //Serial.print("modifier key pressed\n");
 	}
 
   if (k >= 0xE9){
@@ -372,14 +378,14 @@ size_t BleKeypad::presskey(const MediaKeyReport k)
 size_t BleKeypad::releasekey(uint8_t k)
 {
 	uint8_t i;
-  Serial.print("Releasing key ");
-  Serial.print(k, HEX);
-  Serial.print("\n");
+  //Serial.print("Releasing key ");
+  //Serial.print(k, HEX);
+  //Serial.print("\n");
 
 	if (k >= 128 && k <= 135) {			// it's a modifier key
 		_keyReport.modifiers &= ~(1<<k);
     k = 0;
-    Serial.print("Modifier Key released\n");
+    //Serial.print("Modifier Key released\n");
 	}
 
   if (k >= 0xE9){
@@ -392,7 +398,7 @@ size_t BleKeypad::releasekey(uint8_t k)
       case 0xEE: this->releasekey(VOLUME_UP);
       case 0xEF: this->releasekey(VOLUME_DOWN);
     }
-    Serial.print("media key released\n");
+    //Serial.print("media key released\n");
   }
 
 	// Test the key report to see if k is present.  Clear it if it exists.
@@ -404,7 +410,7 @@ size_t BleKeypad::releasekey(uint8_t k)
 	}
 
 	sendReport(&_keyReport);
-  Serial.print("Rleased key sent!\n");
+  //Serial.print("Rleased key sent!\n");
 	return 1;
 }
 
