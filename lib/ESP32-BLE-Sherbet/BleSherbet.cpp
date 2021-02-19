@@ -234,7 +234,7 @@ void BleKeypad::sendReport(KeyReport* keys)
   if (this->isConnected())
   {
     this->inputKeyboard->setValue((uint8_t*)keys, sizeof(KeyReport));
-    this->inputKeyboard->notify();
+    //this->inputKeyboard->notify();
   }
 }
 
@@ -243,7 +243,7 @@ void BleKeypad::sendMediaReport(uint8_t key)
   if (this->isConnected())
   {
     this->inputMediaKeys->setValue((uint8_t*)key, sizeof(key));
-    this->inputMediaKeys->notify();
+    //this->inputMediaKeys->notify();
   }
 }
 
@@ -252,7 +252,7 @@ void BleKeypad::sendReport(MediaKeyReport* keys)
   if (this->isConnected())
   {
     this->inputMediaKeys->setValue((uint8_t*)keys, sizeof(MediaKeyReport));
-    this->inputMediaKeys->notify();
+    //this->inputMediaKeys->notify();
   }
 }
 
