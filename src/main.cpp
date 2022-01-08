@@ -4,7 +4,10 @@
  * 
  * ToDo:
  *  - Add a timeout to deep sleep after a period of inactivity for additional power savings
- *  - Implement user-definable layouts imported from a text file on an attached SD card.
+ *  - Implement user-definable layouts imported from a JSON file on an attached SD card.
+ *  - Implement a fallback layout to use when an SD card is not found or JSON file is corrupted.
+ *  - Implement a different mode-switching function for keycombo detetection
+ *  - Implement a key-press joystick mode for software that doesn't support joystick input.
  */
 
 #include <Arduino.h>
@@ -97,7 +100,7 @@ BleKeypad bleKeypad;								//The keypad object
 
 //Temporary layout management variables
 int keyLayer = 0;
-const int totalKeyLayers = 2;
+const int totalKeyLayers = 3;
 const int keyMap[totalKeyLayers][ROW_COUNT][COL_COUNT] = {
 {
 	{KEY_ESC, KEY_O, KEY_I, KEY_Q, KEY_V, KEY_T},
@@ -110,7 +113,14 @@ const int keyMap[totalKeyLayers][ROW_COUNT][COL_COUNT] = {
 	{BUTTON_7,BUTTON_8,BUTTON_9,BUTTON_10,BUTTON_11,BUTTON_12},
 	{BUTTON_13,BUTTON_14,BUTTON_15,BUTTON_16,BUTTON_17,BUTTON_18},
 	{BUTTON_19,BUTTON_20,BUTTON_21,BUTTON_22,BUTTON_23,BUTTON_24}
-}};
+},
+{
+	{KEY_ESC, KEY_1, KEY_2, KEY_3, KEY_4, KEY_M},
+	{KEY_0, KEY_TAB, KEY_O, KEY_X, KEY_E, KEY_R},
+	{KEY_9, KEY_LEFT_ALT, KEY_LEFT_CTRL, KEY_LEFT_SHIFT, KEY_SPACE, KEY_F},
+	{KEY_8, KEY_V, KEY_Z, KEY_C, KEY_Q, KEY_B}
+}
+};
 
 const int MAX_LAYERS = 5;
 static String layout[MAX_LAYERS][ROW_COUNT][COL_COUNT];
@@ -138,7 +148,13 @@ void rowScan(int col) {
 			Serial.print(":");
 			Serial.print(col, DEC);
 			Serial.print(" Pressed\n");
-			bleKeypad.presskey(keyMap[keyLayer][row][col]);
+			if (keyLayer != 1){
+				bleKeypad.presskey(keyMap[keyLayer][row][col]);
+			} else if (keyLayer == 1){
+				bleKeypad.press(keyMap[keyLayer][row][col]);
+			}
+			Serial.print(keyMap[keyLayer][row][col]);
+			Serial.print(" Pressed\n");
 			update = true;
 			return;
 			//press the button of the right layer
@@ -147,7 +163,13 @@ void rowScan(int col) {
 			Serial.print(":");
 			Serial.print(col, DEC);
 			Serial.print(" Released\n");
-			bleKeypad.releasekey(keyMap[keyLayer][row][col]);
+			if (keyLayer != 1){
+				bleKeypad.releasekey(keyMap[keyLayer][row][col]);
+			} else if (keyLayer == 1){
+				bleKeypad.release(keyMap[keyLayer][row][col]);
+			}
+			Serial.print(keyMap[keyLayer][row][col]);
+			Serial.print(" Released\n");
 			update = true;
 			return;
 			//release the button of the right layer
@@ -291,9 +313,15 @@ void modeScanner(){
 	btnDebounce[0].update();
 	if (btnDebounce[0].fell()){
 		keyLayer++;
+		Serial.print("Mode updated to ");
+		Serial.print(keyLayer);
+		Serial.print("\n");
 	}
-	if (keyLayer>1){
+	if (keyLayer == totalKeyLayers){
 		keyLayer = 0;
+		Serial.print("Mode updated to ");
+		Serial.print(keyLayer);
+		Serial.print("\n");
 	}
 }
 
@@ -354,6 +382,7 @@ void setup() {
   	bleKeypad.begin();
 
 //Initialize and read SD Card
+/*
 	pinMode(SD_CS, OUTPUT);
 	digitalWrite(SD_CS, HIGH);
 	pinMode(23, INPUT_PULLUP);
@@ -379,7 +408,7 @@ void setup() {
 			}
 		}
 	}
-
+*/
 //Start by configuring GPIO:
 	
 	//Set rows to initial state
